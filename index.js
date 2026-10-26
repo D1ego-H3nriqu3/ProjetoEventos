@@ -27,6 +27,30 @@ router.get("/eventos/:id", (req, res) => {
 
 })
 
+router.post("/eventos", (req, res) => {
+    let nome = req.body.nome
+    let local = req.body.local
+    let vagas = req.body.vagas
+
+    if(!nome || !local || !vagas){
+        return res.status(400).send({erro: "As informações cadastrais precisam ser preenchidas corretamente!"})
+    }
+
+    if(nome === "" || local === "" || isNaN(vagas) || vagas <= 0){
+        return res.status(400).send({erro: "As informações cadastrais precisam ser preenchidas corretamente!"})
+    }
+
+    let id = 1
+    if(eventos.length > 0){
+        id = eventos[eventos.length-1].id + 1
+    }
+
+    let evento = {id: id, nome: nome, local: local, vagas: vagas}
+    if(eventos.push(evento)){
+        res.status(201).send(`Evento cadastrado com sucesso!`)
+    }
+})
+
 router.listen(port, () => {
     console.log("Rodando na porta:",port)
 })
