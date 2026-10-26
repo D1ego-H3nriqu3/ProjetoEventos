@@ -69,6 +69,18 @@ router.put("/eventos/:id", (req, res) => {
     res.send("Evento atualizado com sucesso!")
 })
 
+router.delete("/eventos/:id", (req, res) => {
+    let id = Number(req.params.id)
+    const indice = eventos.findIndex((evento) => evento.id === id)
+
+    if(indice === -1){
+        return res.status(404).send({erro: "Não foi possível encontrar o evento;"})
+    }
+
+    eventos.splice(indice, 1)
+    res.send("Evento cancelado com sucesso!")
+})
+
 router.listen(port, () => {
     console.log("Rodando na porta:",port)
 })
