@@ -51,6 +51,24 @@ router.post("/eventos", (req, res) => {
     }
 })
 
+router.put("/eventos/:id", (req, res) => {
+    let id = Number(req.params.id)
+    const indice = eventos.findIndex((evento) => evento.id === id)
+
+    if(indice === -1){
+        return res.status(404).send({erro: "Não foi possível encontrar o evento;"})
+    }
+
+    let local = req.body.local
+
+    if(!local || local === ""){
+        return res.status(400).send({erro: "As informações de mudança devem ser preenchidas corretamente!"})
+    }
+
+    eventos[indice].local = local
+    res.send("Evento atualizado com sucesso!")
+})
+
 router.listen(port, () => {
     console.log("Rodando na porta:",port)
 })
